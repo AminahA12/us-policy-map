@@ -1,0 +1,97 @@
+<%- include('partials/header', { title: stateName + ' Policy News — PolicyMap' }) %>
+
+<main class="state-page">
+
+  <div class="state-header">
+    <a href="/" class="back-btn">&larr; Back to Map</a>
+    <h1><%= stateName %> &mdash; Policy News</h1>
+  </div>
+
+  <!-- ── News Section ───────────────────────────────────────────── -->
+  <section class="news-section">
+    <h2>Latest Reuters Headlines</h2>
+
+    <% if (articles.length === 0) { %>
+      <p class="no-data">No articles found for <%= stateName %>. The API may be rate-limited or no results matched — try again shortly.</p>
+    <% } else { %>
+      <div class="articles-grid">
+        <% articles.slice(0, 9).forEach(article => {
+             const title   = article.title || article.headline || 'Untitled';
+             const desc    = article.description || article.excerpt || article.body || '';
+             const url     = article.url || article.link || '#';
+             const img     = article.thumbnail || article.image || article.urlToImage || '';
+             const dateStr = article.datePublished || article.publishedAt || article.date || '';
+        %>
+          <article class="article-card">
+            <% if (img) { %>
+              <img src="<%= img %>" alt="Article image" class="article-img" onerror="this.style.display='none'">
+            <% } %>
+            <div class="article-content">
+              <h3><a href="<%= url %>" target="_blank" rel="noopener noreferrer"><%= title %></a></h3>
+              <p class="article-desc">
+                <%= desc.length > 200 ? desc.substring(0, 200) + '…' : desc %>
+              </p>
+              <% if (dateStr) { %>
+                <span class="article-date"><%= new Date(dateStr).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) %></span>
+              <% } %>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    <% } %>
+  </section>
+
+  <!-- ── Opinion Form ───────────────────────────────────────────── -->
+  <section class="opinion-section">
+    <h2>Share Your Opinion</h2>
+    <form action="/state/<%= encodeURIComponent(stateName) %>/opinion" method="POST" class="opinion-form">
+
+      <div class="form-group">
+        <label for="name">Your Name <span class="optional">(optional)</span></label>
+        <input type="text" id="name" name="name" placeholder="Anonymous" maxlength="100">
+      </div>
+
+      <div class="form-group">
+        <label for="topic">Policy Topic <span class="optional">(optional)</span></label>
+        <input type="text" id="topic" name="topic"
+               placeholder="e.g. Healthcare, Education, Infrastructure…" maxlength="100">
+      </div>
+
+      <div class="form-group">
+        <label for="opinion">Your Opinion <span class="required">*</span></label>
+        <textarea id="opinion" name="opinion" rows="5"
+                  placeholder="Share your thoughts on policy issues in <%= stateName %>…"
+                  maxlength="1000" required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit Opinion</button>
+    </form>
+  </section>
+
+  <!-- ── Past Opinions ─────────────────────────────────────────── -->
+  <section class="past-opinions">
+    <h2>Community Opinions (<%= opinions.length %>)</h2>
+
+    <% if (opinions.length === 0) { %>
+      <p class="no-data">No opinions yet — be the first to share!</p>
+    <% } else { %>
+      <div class="opinions-list">
+        <% opinions.forEach(op => { %>
+          <div class="opinion-card">
+            <div class="opinion-header">
+              <span class="opinion-author"><%= op.name || 'Anonymous' %></span>
+              <% if (op.topic) { %><span class="opinion-topic"><%= op.topic %></span><% } %>
+              <span class="opinion-date">
+                <%= op.createdAt.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) %>
+              </span>
+            </div>
+            <p class="opinion-text"><%= op.opinion %></p>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </section>
+
+</main>
+
+<%- include('partials/footer') %>

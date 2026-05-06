@@ -1,0 +1,23 @@
+<%- include('partials/header', { title: 'PolicyMap — US State Policy News' }) %>
+
+<main class="home">
+  <div class="hero">
+    <h1>Explore US Policy News by State</h1>
+    <p>Click any state to see the latest Reuters headlines and share your opinion.</p>
+  </div>
+
+  <div id="map-container">
+    <div id="tooltip" class="tooltip"></div>
+    <div id="map">
+      <div class="map-loading">Loading map&hellip;</div>
+    </div>
+  </div>
+
+  <p class="instructions">Hover over a state to see its name &mdash; click to explore news and submit opinions.</p>
+</main>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson@3.0.2/dist/topojson.min.js"></script>
+<script src="/js/map.js"></script>
+
+<%- include('partials/footer') %>
