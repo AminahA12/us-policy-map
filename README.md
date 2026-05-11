@@ -22,7 +22,7 @@ An interactive US map where users click any state to view the latest Reuters pol
 ## Contact Email
 <!-- Fill in before submission -->
 aaminah@terpmail.umd.edu
-louisngu@terpmail.umd.edu
+\louisngu@terpmail.umd.edu
 
 ## Deployed App Link
 <!-- Add before submission -->
