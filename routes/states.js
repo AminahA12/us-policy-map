@@ -3,29 +3,23 @@ const router = express.Router();
 const axios = require('axios');
 const Opinion = require('../models/Opinion');
 
-// ─── Reuters API ──────────────────────────────────────────────────────────────
-// Check your RapidAPI playground to confirm the exact endpoint path and
-// response shape. Adjust REUTERS_HOST, the url, and params as needed.
-const REUTERS_HOST = 'reuters-api.p.rapidapi.com';
-
 async function fetchNews(stateName) {
   try {
-    const response = await axios.get(`https://${REUTERS_HOST}/category?url=https%3A%2F%2Fwww.reuters.com%2Fworld%2Fafrica%2F`, {
-      params: { query: `${stateName} policy`, size: '10' },
-      headers: {
-        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
-        'X-RapidAPI-Host': REUTERS_HOST
-      }
+    const response = await axios.get('https://newsapi.org/v2/everything', {
+      params: {
+        q: `"${stateName}" policy`,
+        language: 'en',
+        sortBy: 'publishedAt',
+        pageSize: 10
+      },
+      headers: { 'X-Api-Key': process.env.NEWSAPI_KEY }
     });
-    const data = response.data;
-    // Handle common response shapes from RapidAPI news endpoints
-    return data.articles ?? data.results ?? data.items ?? (Array.isArray(data) ? data : []);
+    return response.data.articles ?? [];
   } catch (err) {
-    console.error('Reuters API error:', err.response?.status, err.message);
+    console.error('NewsAPI error:', err.response?.status, err.response?.data?.message || err.message);
     return [];
   }
 }
-// ─────────────────────────────────────────────────────────────────────────────
 
 router.get('/:state', async (req, res) => {
   const stateName = decodeURIComponent(req.params.state);
