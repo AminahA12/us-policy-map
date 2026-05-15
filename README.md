@@ -14,7 +14,7 @@ Welcome!! Before you sits the amazing USA Policy and news Map! We bring an inter
 
 ## YouTube Video Link
 <!-- Add before submission -->
-[Demo Video] https://youtu.be/Gx6SimDjIyU
+[Demo Video] (https://youtu.be/Gx6SimDjIyU](https://youtu.be/-MlulVlG470)
 
 ## APIs
 - [newsAPI](https://newsapi.org/) — Provides real-time news articles searched by state name.
